@@ -10,7 +10,6 @@ describe('HomeComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ HomeComponent ],
       imports: [HttpClientModule],
-      // providers: [PhotoService]
     })
     .compileComponents();
 

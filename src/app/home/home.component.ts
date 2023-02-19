@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PhotoService } from '../_services/photo.service';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -13,6 +13,7 @@ export class HomeComponent {
   // initialize variables and constants
   //search key
   searchKey : string = "";
+  prevKey : string = "";
 
   //page
   page: any = 1;
@@ -24,35 +25,60 @@ export class HomeComponent {
   // photo list
   photoList: any[] = [];
 
-  get_photo_list(page:number) {
+  // get photo list: a) get photos from photoService 2) update params
+  getPhotoList(page:number) {
     this.photoList = [];
     this.photoService.getPhotos(page)
       .subscribe((res:any) => {
-        this.photoList =  res.photos;
+        this.photoList = res.photos;
         this.length = res.total_results;
-        // this.photoList.concat((res as any).photos.map((photo:any) => photo.src.medium));
     })
+    this.router.navigate(
+      ['/home-component'], 
+      { queryParams: { page: page} }
+    ); 
   }
 
-  search_photos(page:number) {
+  // search photos
+  searchPhotos(page:number) {
+    // check if this is a new search, update page and pageIndex to default if so
+    if(this.ifNewSearch()) {
+      page = 1;
+      this.pageIndex = 0;
+    }
+
+    // if searchKey is empty, get curated photos
     if(this.searchKey == "") {
-      this.get_photo_list(page);
+      this.getPhotoList(page);
+      this.prevKey = this.searchKey;
       return;
     }
-    // this.page = 1;
-    // this.pageIndex = this.page-1;
-    this.request_search_photos(page);
-    console.log("search ", this.searchKey, " page ", this.page, " index ", this.pageIndex);
+
+    // has a searchKey, search photos by key 
+    this.requestSearchPhotos(page);
+    this.prevKey = this.searchKey;
   }
 
-  request_search_photos(page:number) {
+  // request to search photos: a) search photos using photoService b) update params
+  requestSearchPhotos(page:number) {
     this.photoService.searchPhotos(this.searchKey, page)
       .subscribe((res:any) => {
         this.photoList = res.photos;
         this.length = res.total_results;
       })
+    this.router.navigate(
+      ['/home-component'], 
+      { queryParams: { page: page, searchKey: this.searchKey} }
+    ); 
   }
 
+
+  // check if this is a new search
+  ifNewSearch() {
+    return this.prevKey !== this.searchKey;
+  }
+
+  // page event handling
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     console.log(e);
@@ -61,21 +87,37 @@ export class HomeComponent {
     this.pageIndex = e.pageIndex;
     this.page = e.pageIndex+1;
     if(this.searchKey == "") {
-      this.get_photo_list(this.page);
+      this.getPhotoList(this.page);
     } else {
-      this.request_search_photos(this.page);
+      this.requestSearchPhotos(this.page);
     }
   }
 
   constructor(
     private photoService: PhotoService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     console.log("constructor");
   }
 
   ngOnInit() {
-    this.search_photos(this.pageIndex+1);
+    // get current params from url
+    this.router.navigate(['/'], {queryParamsHandling: "preserve"})
+
+    this.route.queryParams
+      .subscribe(params => {
+        this.searchKey = params['searchKey'] ? params['searchKey'] : "";
+        this.page = params['page'] ? params['page'] : 1;
+        this.prevKey = this.searchKey;
+        if(this.page > 1) {
+          this.pageIndex = this.page-1;
+        }
+      }
+    );
+
+    // get photo list
+    this.searchPhotos(this.page);
   }
 
 }

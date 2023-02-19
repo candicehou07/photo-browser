@@ -12,6 +12,7 @@ export class PhotoService {
     private http: HttpClient
   ) { }
 
+  // get curated photos 
   getPhotos(page: number = 1) {
   const headers = new HttpHeaders({
     'Authorization':this.apiKey,
@@ -20,6 +21,7 @@ export class PhotoService {
     return  this.http.get(`https://api.pexels.com/v1/curated?per_page=10&page=${page}`, requestOptions)
   }
 
+  // search photos by key
   searchPhotos(searchKey: string, page: number = 1) {
     const headers = new HttpHeaders({
       'Authorization':this.apiKey,

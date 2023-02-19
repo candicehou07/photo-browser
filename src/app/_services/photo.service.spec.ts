@@ -26,10 +26,4 @@ describe('PhotoService', () => {
     let photoList = service.searchPhotos('corgi');
     expect(photoList).toBeDefined();
   })
-
-  // it("should create a post in an array", () => {
-  //   const qouteText = "This is my first post";
-  //   service.addNewQuote(qouteText);
-  //   expect(service.quoteList.length).toBeGreaterThanOrEqual(1);
-  // });
 });
