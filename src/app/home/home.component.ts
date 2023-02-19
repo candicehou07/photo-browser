@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent {
   // initialize variables and constants
   //search key
-  searchKey : string = "";
+  searchKey : any = "";
   prevKey : string = "";
 
   //page
@@ -93,16 +93,8 @@ export class HomeComponent {
     }
   }
 
-  constructor(
-    private photoService: PhotoService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit() {
-    // get current params from url
-    this.router.navigate(['/'], {queryParamsHandling: "preserve"})
-
+  // get params from url
+  getParams() {
     this.route.queryParams
       .subscribe(params => {
         this.searchKey = params['searchKey'] ? params['searchKey'] : "";
@@ -113,7 +105,18 @@ export class HomeComponent {
         }
       }
     );
+  }
 
+  constructor(
+    private photoService: PhotoService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    // get current params from url
+    this.router.navigate(['/'], {queryParamsHandling: "preserve"})
+    this.getParams();
     // get photo list
     this.searchPhotos(this.page);
   }
