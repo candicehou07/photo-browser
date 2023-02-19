@@ -1,38 +1,36 @@
 <div class="content" role="main">
-    <form class="search-form" (ngSubmit)='searchPhotos(this.pageIndex+1)'>
-        <mat-form-field class="full-width">
-            <mat-label>Ex. Corgi</mat-label>
-            <input matInput placeholder="Ex. Corgi" name="searchkey" [(ngModel)]="searchKey">
-        </mat-form-field>
-        <button mat-raised-button type='submit'>Search</button>
-    </form>
+
+    <div class = "actions">
+        <form class="search-form" (ngSubmit)='searchPhotos(this.pageIndex+1)'>
+            <mat-form-field class="full-width">
+                <mat-label>Ex. Corgi</mat-label>
+                <input matInput placeholder="Ex. Corgi" name="searchkey" [(ngModel)]="searchKey">
+            </mat-form-field>
+            <button class="search-button" mat-raised-button type='submit'>Search</button>
+        </form>
+    </div>
     <br>
     
-    <mat-grid-list class="photo-list" cols="5">
+    <mat-grid-list class="photo-list" cols="5" rowHeight="3:2">
         <mat-list-item *ngFor="let photo of this.photoList">
-          <mat-grid-tile hover-overlay hover-zoom hover-shadow>
+          <mat-grid-tile>
             <a [href]="photo.url">
-            
             <mat-card class="photo-card">
-                <div class="bg-image ripple" data-mdb-ripple-color="light">
-                    <img class="image" mat-card-image [src]="photo.src.medium" alt="image">
-                    <div class="mask flex-center rgba-green-slight">
-                        <p class="white-text">Super light overlay</p>
-                    </div>
+                <div class="bg-image">
+                    <img class="image" mat-card-image [src]="photo.src.medium ? photo.src.medium : 'https://placeholder.com/150'" alt="image">
                 </div>
             </mat-card>
-            
         </a>    
         </mat-grid-tile>
        </mat-list-item>
     </mat-grid-list>
 
-    <mat-paginator [length]="length"
-              [pageSize]="10"
-              aria-label="Select page"
-              hidePageSize = "true"
-              [pageIndex]="pageIndex"
-              (page)="handlePageEvent($event)">
+    <mat-paginator class="paginator" [length]="length" light
+            [pageSize]="10"
+            aria-label="Select page"
+            hidePageSize = "true"
+            [pageIndex]="pageIndex"
+            (page)="handlePageEvent($event)">
     </mat-paginator>
 </div>
 

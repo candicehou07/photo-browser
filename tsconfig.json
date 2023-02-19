@@ -23,7 +23,9 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "types": ["node", "jest"],
+    "typeRoots": ["@types", "node_modules/@types"],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
