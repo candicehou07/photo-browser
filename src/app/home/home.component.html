@@ -1,0 +1,49 @@
+<div class="content" role="main">
+    <form class="search-form" (ngSubmit)='search_photos(this.pageIndex+1)'>
+        <mat-form-field class="full-width">
+            <mat-label>Ex. Corgi</mat-label>
+            <!-- <input matInput placeholder="Ex. Hello" name="searchkey" [(ngModel)]="searchkey" (blur)="get_photo_list()" > -->
+            <input matInput placeholder="Ex. Corgi" name="searchkey" [(ngModel)]="searchKey">
+        </mat-form-field>
+        <button mat-raised-button type='submit'>Search</button>
+    </form>
+    <br>
+    
+    <!-- <form #searchForm='ngForm' (ngSubmit)='searchPhotos(searchForm)'>
+        <mat-form-field>
+            <input matInput placeholder="Search Photos" required #search='ngModel' name='search' [(ngModel)]='query.search'>
+            <mat-error *ngIf="search.invalid && (search.dirty || search.touched)">
+                <div *ngIf="search.errors.required">
+                    Search query is required.
+                </div>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button type='submit'>Search</button>
+    </form> -->
+
+    <mat-grid-list class="photo-list" cols="5">
+        <mat-list-item *ngFor="let photo of this.photoList">
+        <!-- <mat-grid-tile  [colspan]="photo.cols" [rowspan]="photo.rows"> -->
+          <mat-grid-tile >
+            <mat-card class="photo-card">
+                <mat-card-header>
+                  <!-- <mat-card-title>{{photo.alt}}</mat-card-title> -->
+                  <mat-card-subtitle>{{photo.photographer}}</mat-card-subtitle> 
+                </mat-card-header>
+                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                <img mat-card-image [src]="photo.src.medium" alt="image">
+            </mat-card>
+        </mat-grid-tile>
+       </mat-list-item>
+    </mat-grid-list>
+
+    <mat-paginator [length]="length"
+              [pageSize]="10"
+              aria-label="Select page"
+              hidePageSize = "true"
+              [pageIndex]="pageIndex"
+              (page)="handlePageEvent($event)">
+    </mat-paginator>
+</div>
+
