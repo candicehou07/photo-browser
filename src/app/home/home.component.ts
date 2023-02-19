@@ -97,9 +97,7 @@ export class HomeComponent {
     private photoService: PhotoService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    console.log("constructor");
-  }
+  ) {}
 
   ngOnInit() {
     // get current params from url

@@ -10,16 +10,19 @@
     
     <mat-grid-list class="photo-list" cols="5">
         <mat-list-item *ngFor="let photo of this.photoList">
-          <mat-grid-tile >
+          <mat-grid-tile hover-overlay hover-zoom hover-shadow>
+            <a [href]="photo.url">
+            
             <mat-card class="photo-card">
-                <mat-card-header>
-                  <mat-card-subtitle>{{photo.photographer}}</mat-card-subtitle> 
-                </mat-card-header>
                 <div class="bg-image ripple" data-mdb-ripple-color="light">
-                    <img mat-card-image [src]="photo.src.medium" alt="image">
+                    <img class="image" mat-card-image [src]="photo.src.medium" alt="image">
+                    <div class="mask flex-center rgba-green-slight">
+                        <p class="white-text">Super light overlay</p>
+                    </div>
                 </div>
-                
             </mat-card>
+            
+        </a>    
         </mat-grid-tile>
        </mat-list-item>
     </mat-grid-list>
