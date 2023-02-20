@@ -6,7 +6,7 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root'
 })
 export class PhotoService {
-  private apiKey : any = ""; 
+  private apiKey : string = ""; 
 
   constructor(
     private http: HttpClient

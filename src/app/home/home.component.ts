@@ -10,7 +10,6 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  // initialize variables and constants
   //search key
   searchKey : any = "";
   prevKey : string = "";
@@ -39,6 +38,19 @@ export class HomeComponent {
     ); 
   }
 
+  // request to search photos: a) search photos using photoService b) update params
+  requestSearchPhotos(page:number) {
+    this.photoService.searchPhotos(this.searchKey, page)
+      .subscribe((res:any) => {
+        this.photoList = res.photos;
+        this.length = res.total_results;
+      })
+    this.router.navigate(
+      ['/home-component'], 
+      { queryParams: { page: page, searchKey: this.searchKey} }
+    ); 
+  }
+
   // search photos
   searchPhotos(page:number) {
     // check if this is a new search, update page and pageIndex to default if so
@@ -54,24 +66,10 @@ export class HomeComponent {
       return;
     }
 
-    // has a searchKey, search photos by key 
+    // if searchKey, search photos by key 
     this.requestSearchPhotos(page);
     this.prevKey = this.searchKey;
   }
-
-  // request to search photos: a) search photos using photoService b) update params
-  requestSearchPhotos(page:number) {
-    this.photoService.searchPhotos(this.searchKey, page)
-      .subscribe((res:any) => {
-        this.photoList = res.photos;
-        this.length = res.total_results;
-      })
-    this.router.navigate(
-      ['/home-component'], 
-      { queryParams: { page: page, searchKey: this.searchKey} }
-    ); 
-  }
-
 
   // check if this is a new search
   ifNewSearch() {
@@ -81,7 +79,6 @@ export class HomeComponent {
   // page event handling
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    console.log(e);
     this.length = e.length;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
@@ -93,7 +90,7 @@ export class HomeComponent {
     }
   }
 
-  // get params from url
+  // fetch params from url
   getParams() {
     this.route.queryParams
       .subscribe(params => {
