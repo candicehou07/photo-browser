@@ -13,8 +13,9 @@ export class PhotoService {
   ) { }
   
   // fetch apiKey
+  // Todo: please enter your Pexels API Key in 'src/environment/environment' to update the value
   getKey() {
-    this.apiKey = environment.PEXELS_API_KEY;
+    this.apiKey = environment.PEXELS_API_KEY === "YOUR_API_KEY" ? "" : environment.PEXELS_API_KEY;
   }
 
   // get curated photos 
